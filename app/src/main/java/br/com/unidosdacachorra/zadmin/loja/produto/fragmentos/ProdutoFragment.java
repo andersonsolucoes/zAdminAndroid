@@ -41,6 +41,7 @@ import br.com.unidosdacachorra.zadmin.database.GerarTabelaProduto;
 import br.com.unidosdacachorra.zadmin.loja.produto.activities.AdicionarProdutoActivity;
 import br.com.unidosdacachorra.zadmin.loja.produto.activities.DetalharProdutoActivity;
 import br.com.unidosdacachorra.zadmin.loja.produto.dao.ProdutoDao;
+import br.com.unidosdacachorra.zadmin.util.AbstractActivity;
 import br.com.unidosdacachorra.zadmin.util.AbstractFragment;
 
 /**
@@ -62,6 +63,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
     private int mVisibleItemCount;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressList;
+    private ProgressBar progressSincronizacao;
 
 
     @Override
@@ -88,6 +90,8 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         mLayoutConsultarProduto = getActivity().findViewById(R.id.consultar_produto_layout);
         progressBar = getActivity().findViewById(R.id.progresso);
         progressList = (ProgressBar) getActivity().findViewById(R.id.load_list_bottom);
+        progressSincronizacao = (ProgressBar) getActivity().findViewById(R.id.progressoHorizontal);
+        progressSincronizacao.setIndeterminate(true);
 
         lista = (ListView) getActivity().findViewById(R.id.listView);
         listaTemp = new ListView(getContext());
@@ -338,7 +342,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         protected void onPreExecute() {
             super.onPreExecute();
             if(mShowProgress) {
-                showProgress(true, mLayoutConsultarProduto, progressBar);
+                ((AbstractActivity)getActivity()).showProgress(true, mLayoutConsultarProduto, progressBar);
             }
             if(mIsConsulta){
                 int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -383,7 +387,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
             swipeRefreshLayout.setRefreshing(false);
 
             if(mShowProgress) {
-                showProgress(false, mLayoutConsultarProduto, progressBar);
+                ((AbstractActivity)getActivity()).showProgress(false, mLayoutConsultarProduto, progressBar);
             }
 
             if(mIsConsulta) {
@@ -429,7 +433,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         protected void onCancelled() {
             mLoadTask = null;
             if(mShowProgress) {
-                showProgress(false, mLayoutConsultarProduto, progressBar);
+                ((AbstractActivity)getActivity()).showProgress(false, mLayoutConsultarProduto, progressBar);
             }
         }
     }
@@ -451,7 +455,9 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgress(true, mLayoutConsultarProduto, progressBar);
+            ((AbstractActivity)getActivity()).showProgress(true, null, progressSincronizacao);
+            cabecalho.getMenu().findItem(R.id.action_sincronizar_produto).setEnabled(false);
+            cabecalho.getMenu().findItem(R.id.action_sincronizar_produto).setIcon(R.drawable.ic_upload_inativo);
         }
 
         @Override
@@ -472,8 +478,10 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
             mLoadTask = null;
             if(success) {
                 Toast.makeText(getActivity(), "Itens sincronizados com sucesso", Toast.LENGTH_SHORT).show();
-                showProgress(false, mLayoutConsultarProduto, progressBar);
+                ((AbstractActivity)getActivity()).showProgress(false, null, progressSincronizacao);
                 popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
+                cabecalho.getMenu().findItem(R.id.action_sincronizar_produto).setEnabled(true);
+                cabecalho.getMenu().findItem(R.id.action_sincronizar_produto).setIcon(R.drawable.ic_upload);
             } else {
                 Log.i("SINCRONIZAR PRODUTO", "Erro ao executar a operação");
             }
@@ -483,7 +491,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         @Override
         protected void onCancelled() {
             mLoadTask = null;
-            showProgress(false, mLayoutConsultarProduto, progressBar);
+            ((AbstractActivity)getActivity()).showProgress(false, null, progressSincronizacao);
         }
     }
 

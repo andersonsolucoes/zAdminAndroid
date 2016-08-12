@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import br.com.unidosdacachorra.zadmin.R;
 import br.com.unidosdacachorra.zadmin.loja.produto.activities.DetalharProdutoActivity;
 import br.com.unidosdacachorra.zadmin.loja.produto.dao.ProdutoDao;
+import br.com.unidosdacachorra.zadmin.util.AbstractActivity;
 import br.com.unidosdacachorra.zadmin.util.AbstractFragment;
 import br.com.unidosdacachorra.zadmin.util.Mensagem;
 
@@ -74,7 +75,7 @@ public class EditarProdutoFragment extends AbstractFragment {
         EditText valor = (EditText) getActivity().findViewById(R.id.editar_valor_produto);
 
         if(isProdutoValido(idTxt,nome, descricao, valor)) {
-            showProgress(true, mFormEditarProduto, progressBar);
+            ((AbstractActivity)getActivity()).showProgress(true, mFormEditarProduto, progressBar);
             int idInt = Integer.parseInt(idTxt.getText().toString());
             String nomeString = nome.getText().toString();
             String descricaoString = descricao.getText().toString();
@@ -150,7 +151,7 @@ public class EditarProdutoFragment extends AbstractFragment {
         @Override
         protected void onPostExecute(final Boolean success) {
             mEditarTask = null;
-            showProgress(false, mFormEditarProduto, progressBar);
+            ((AbstractActivity)getActivity()).showProgress(false, mFormEditarProduto, progressBar);
 
             if(success) {
                 Context context = getContext();
@@ -172,7 +173,7 @@ public class EditarProdutoFragment extends AbstractFragment {
         @Override
         protected void onCancelled() {
             mEditarTask = null;
-            showProgress(false, mFormEditarProduto, progressBar);
+            ((AbstractActivity)getActivity()).showProgress(false, mFormEditarProduto, progressBar);
         }
     }
 }
