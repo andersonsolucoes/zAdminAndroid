@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Início"
+            android:checked="true"/>
+        <item
+            android:id="@+id/nav_loja"
+            android:title="Loja"
+            android:icon="@drawable/ic_menu_loja_venda">
+        </item>
+
+        <item android:title="Perfil">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_alterar_senha"
+                        android:icon="@drawable/ic_menu_senha"
+                        android:title="Alterar senha" />
+                    <item
+                        android:id="@+id/nav_sair"
+                        android:icon="@drawable/ic_menu_sair"
+                        android:title="Sair" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+</menu>

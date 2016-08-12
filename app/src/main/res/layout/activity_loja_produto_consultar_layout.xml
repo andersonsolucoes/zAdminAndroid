@@ -1,0 +1,49 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="0"
+    android:orientation="horizontal">
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/nomeProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="@dimen/text_margin"
+            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text="Nome"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+                android:id="@+id/valorProduto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:text="Valor"/>
+        <ImageView
+            android:id="@+id/sincronizacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:paddingBottom="@dimen/text_margin"
+            android:paddingRight="@dimen/text_margin"
+            />
+
+    </TableRow>
+
+</TableLayout>

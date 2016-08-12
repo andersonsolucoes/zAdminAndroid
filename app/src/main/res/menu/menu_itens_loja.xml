@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_back"
+            android:icon="@drawable/ic_back"
+            android:title="Voltar" />
+        <item
+            android:id="@+id/nav_loja"
+            android:title="Loja" >
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_loja_vendas"
+                        android:icon="@drawable/ic_menu_loja_venda"
+                        android:title="Vendas"/>
+                    <item
+                        android:id="@+id/nav_loja_compras"
+                        android:icon="@drawable/ic_menu_loja_compra"
+                        android:title="Compras" />
+                    <item
+                        android:id="@+id/nav_loja_estoque"
+                        android:icon="@drawable/ic_menu_loja_estoque"
+                        android:title="Estoque" />
+                    <item
+                        android:id="@+id/nav_loja_produtos"
+                        android:icon="@drawable/ic_menu_loja_produtos"
+                        android:title="Produtos" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+</menu>

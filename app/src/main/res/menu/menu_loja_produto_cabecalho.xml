@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".loja.activities.ProdutoActivity" >
+
+    <item
+        android:id="@+id/action_refresh_list"
+        android:icon="@drawable/ic_refresh"
+        app:showAsAction="always"
+        android:title="@string/action_refresh_list"
+        android:menuCategory="secondary"
+        android:orderInCategory="100"/>
+
+    <item
+        android:id="@+id/action_consultar_produto"
+        android:icon="@drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="@string/action_consultar_produto"
+        android:orderInCategory="200"/>
+    <item
+        android:id="@+id/action_add_produto"
+        android:icon="@drawable/ic_menu_add"
+        android:title="@string/action_add_produto"
+        app:showAsAction="always"
+        android:orderInCategory="300"
+        android:menuCategory="secondary"
+        />
+    <item
+        android:id="@+id/action_sincronizar_produto"
+        android:icon="@drawable/ic_upload"
+        android:title="@string/action_sincronizar_produto"
+        app:showAsAction="always"
+        android:orderInCategory="400"
+        android:menuCategory="secondary"
+        />
+
+
+</menu>

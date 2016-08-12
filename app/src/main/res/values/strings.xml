@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">zAdmin</string>
+    <string name="home">Início</string>
+    <string name="modulo_produto">Produtos</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_login">Login</string>
+    <string name="prompt_senha">Senha</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_out">Sair</string>
+    <string name="action_sign_out_test">Saindo</string>
+    <string name="action_sign_in_short">Entrar</string>
+    <string name="error_invalid_login">O Login informado é inválido</string>
+    <string name="error_invalid_senha">Senha inválida</string>
+    <string name="error_incorrect_password">Senha incorreta</string>
+    <string name="error_field_required">Campo obrigatório</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="navigation_drawer_open">Abrir menu</string>
+    <string name="navigation_drawer_close">Fechar menu</string>
+
+    <string name="prompt_senha_antiga">Senha antiga</string>
+    <string name="prompt_senha_nova">Senha nova</string>
+    <string name="prompt_senha_confirma">Senha confirma</string>
+    <string name="action_alterar_senha">Alterar senha</string>
+
+    <string name="prompt_nome_produto">Nome do Produto</string>
+    <string name="prompt_descricao_produto">Descrição</string>
+    <string name="prompt_valor_produto">Valor do Produto</string>
+    <string name="action_add_produto">Adicionar produto</string>
+    <string name="action_editar_produto">Editar produto</string>
+    <string name="action_excluir_produto">Excluir produto</string>
+    <string name="action_refresh_list">Atualizar lista</string>
+    <string name="action_consultar_produto">Consultar produto</string>
+    <string name="action_sincronizar_produto">Sincronizar produto com WebService</string>
+
+    <string name="lista_vazia">Nenhum item encontrado para sua busca</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#2c9100</color>
+    <color name="colorPrimaryDark">#216919</color>
+    <color name="colorAccent">#216919</color>
+    <color name="green_temp">#23A96E</color>
+    <color name="green_dark">#159204</color>
+    <color name="bright_green">#439401</color>
+    <color name="button_green">#10a54a</color>
+    <color name="add_button">#17c700</color>
+    <color name="edit_button">#f9dea1</color>
+    <color name="deletar_button">#ff7376</color>
+    <color name="consultar_button">#00d7fd</color>
+</resources>
