@@ -76,6 +76,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(menu!=null)menu.clear();
         inflater.inflate(R.menu.menu_loja_produto_cabecalho, menu);
         super.onCreateOptionsMenu(menu, inflater);
         cabecalho = (Toolbar) getActivity().findViewById(R.id.toolbar);
@@ -359,11 +360,11 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            try {
+            /*try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
             ProdutoDao dao = new ProdutoDao(getContext());
             final Cursor cursor;
             if(mQuery==null) {
@@ -462,11 +463,11 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            try {
+            /*try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
             ProdutoDao dao = new ProdutoDao(getContext());
             dao.sincronizar(mIds);
 

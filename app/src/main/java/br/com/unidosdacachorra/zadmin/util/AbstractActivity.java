@@ -142,12 +142,12 @@ public class AbstractActivity extends AppCompatActivity
             }
 
             if(intent!=null) {
+                mDrawer.closeDrawers();
                 startActivity(intent);
                 if(!(this instanceof ActivityPrincipal))
                     finish();
                 overridePendingTransition(R.anim.fadein, R.anim.fadeout);
                 //nvDrawer.setCheckedItem(id);
-                mDrawer.closeDrawers();
             }
         }
 
