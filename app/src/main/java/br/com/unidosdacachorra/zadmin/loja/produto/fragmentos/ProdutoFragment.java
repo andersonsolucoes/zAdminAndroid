@@ -248,7 +248,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
     private void sincronizar(final Cursor c, String processador){
         new AlertDialog.Builder(getActivity())
                 .setTitle("Sincronizar")
-                .setMessage("Deseja sincronizar " + c.getCount() + " itens com a Nuvem?")
+                .setMessage("Deseja sincronizar " + c.getCount() + (c.getCount() == 1 ? " item" : " itens") + " com a Nuvem?")
                 .setIcon(R.drawable.ic_help)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -478,7 +478,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         protected void onPostExecute(final Boolean success) {
             mLoadTask = null;
             if(success) {
-                Toast.makeText(getActivity(), "Itens sincronizados com sucesso", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Sincronização concluída com sucesso", Toast.LENGTH_SHORT).show();
                 ((AbstractActivity)getActivity()).showProgress(false, null, progressSincronizacao);
                 popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
                 cabecalho.getMenu().findItem(R.id.action_sincronizar_produto).setEnabled(true);
