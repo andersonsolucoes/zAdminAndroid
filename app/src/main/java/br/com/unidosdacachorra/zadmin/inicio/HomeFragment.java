@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import br.com.unidosdacachorra.zadmin.login.Credencial;
 import br.com.unidosdacachorra.zadmin.login.LoginActivity;
@@ -27,5 +28,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.activity_main, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.main_home);
+        rl.getBackground().setAlpha(120);
     }
 }
