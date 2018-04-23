@@ -40,6 +40,7 @@ public class DetalharProdutoFragment extends AbstractFragment {
     String descricao;
     String valor;
     String valorFormatado;
+    String quantidade;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,11 +72,13 @@ public class DetalharProdutoFragment extends AbstractFragment {
             descricao = mItem.getString(mItem.getColumnIndex(GerarTabelaProduto.DESCRICAO));
             valor = mItem.getString(mItem.getColumnIndex(GerarTabelaProduto.VALOR));
             valorFormatado = getValorFormatado(valor);
+            quantidade = mItem.getString(mItem.getColumnIndex(GerarTabelaProduto.QUANTIDADE));
 
             //((TextView) rootView.findViewById(R.id.item_produto_id)).setText(id);
             ((TextView) rootView.findViewById(R.id.item_produto_nome)).setText(nome);
             ((TextView) rootView.findViewById(R.id.item_produto_descricao)).setText(descricao);
             ((TextView) rootView.findViewById(R.id.item_produto_valor)).setText(valorFormatado);
+            ((TextView) rootView.findViewById(R.id.item_produto_quantidade)).setText(quantidade + " em estoque");
 
             FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +90,7 @@ public class DetalharProdutoFragment extends AbstractFragment {
                     intent.putExtra("nomeProduto", nome);
                     intent.putExtra("descricaoProduto", descricao);
                     intent.putExtra("valorProduto", valor);
+                    intent.putExtra("quantidadeProduto", quantidade);
                     //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivityForResult(intent, 1);
                     //getActivity().finish();
@@ -104,6 +108,7 @@ public class DetalharProdutoFragment extends AbstractFragment {
                 nome = data.getStringExtra("nomeProduto");
                 descricao = data.getStringExtra("descricaoProduto");
                 valor = data.getStringExtra("valorProduto");
+                quantidade = data.getStringExtra("quantidadeProduto");
                 valorFormatado = getValorFormatado(valor);
                 CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) getActivity().findViewById(R.id.toolbar_layout);
                 if (appBarLayout != null) {
@@ -112,6 +117,7 @@ public class DetalharProdutoFragment extends AbstractFragment {
                 ((TextView) getActivity().findViewById(R.id.item_produto_nome)).setText(nome);
                 ((TextView) getActivity().findViewById(R.id.item_produto_descricao)).setText(descricao);
                 ((TextView) getActivity().findViewById(R.id.item_produto_valor)).setText(valorFormatado);
+                ((TextView) getActivity().findViewById(R.id.item_produto_quantidade)).setText(quantidade);
                 ((DetalharProdutoActivity) getActivity()).setAtualizaProduto(true);
             }
         }

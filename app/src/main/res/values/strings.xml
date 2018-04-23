@@ -28,6 +28,7 @@
     <string name="prompt_nome_produto">Nome do Produto</string>
     <string name="prompt_descricao_produto">Descrição</string>
     <string name="prompt_valor_produto">Valor do Produto</string>
+    <string name="prompt_quantidade_produto">Em estoque</string>
     <string name="action_add_produto">Adicionar produto</string>
     <string name="action_editar_produto">Editar produto</string>
     <string name="action_excluir_produto">Excluir produto</string>

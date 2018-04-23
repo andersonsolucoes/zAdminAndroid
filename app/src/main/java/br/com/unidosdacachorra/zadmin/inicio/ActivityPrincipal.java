@@ -3,6 +3,7 @@ package br.com.unidosdacachorra.zadmin.inicio;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import java.util.List;
@@ -25,5 +26,12 @@ public class ActivityPrincipal extends AbstractActivity {
 
         nvDrawer.setCheckedItem(R.id.nav_home);
         mDrawer.closeDrawers();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        ImageView myImage = (ImageView) findViewById(R.id.imgLogo);
+        myImage.setImageAlpha(50);
+        super.onPostCreate(savedInstanceState);
     }
 }

@@ -14,7 +14,7 @@ import java.io.File;
 public class GerarDatabase {
     private SQLiteDatabase db;
     public static final String NOME_BANCO = "zadmin.db";
-    public static final int VERSAO = 1;
+    public static final int VERSAO = 3;
     private GerarTabelaProduto produto;
 
     public static boolean existeDatabase(ContextWrapper context, String dbName) {

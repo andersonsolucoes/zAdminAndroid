@@ -1,7 +1,7 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="0"
+    android:stretchColumns="0,1,2"
     android:orientation="horizontal">
 
     <TableRow
@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_margin"
             android:layout_marginTop="@dimen/text_margin"
+            android:layout_span="3"
             android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceListItem"
             android:text="Nome"/>
@@ -35,6 +36,14 @@
                 android:layout_marginBottom="@dimen/text_margin"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:text="Valor"/>
+        <TextView
+            android:id="@+id/quantidadeProduto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text="Quantidade"/>
         <ImageView
             android:id="@+id/sincronizacao"
             android:layout_width="wrap_content"

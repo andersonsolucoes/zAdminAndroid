@@ -51,6 +51,9 @@ public class EditarProdutoFragment extends AbstractFragment {
         EditText valor = (EditText) getActivity().findViewById(R.id.editar_valor_produto);
         valor.setText(getActivity().getIntent().getStringExtra("valorProduto"));
 
+        EditText quantidade = (EditText) getActivity().findViewById(R.id.editar_quantidade_produto);
+        quantidade.setText(getActivity().getIntent().getStringExtra("quantidadeProduto"));
+
 
         mFormEditarProduto = getActivity().findViewById(R.id.editar_produto_form);
         progressBar = getActivity().findViewById(R.id.progresso);
@@ -73,21 +76,23 @@ public class EditarProdutoFragment extends AbstractFragment {
         EditText nome = (EditText) getActivity().findViewById(R.id.editar_nome_produto);
         EditText descricao = (EditText) getActivity().findViewById((R.id.editar_descricao_produto));
         EditText valor = (EditText) getActivity().findViewById(R.id.editar_valor_produto);
+        EditText quantidade = (EditText) getActivity().findViewById(R.id.editar_quantidade_produto);
 
-        if(isProdutoValido(idTxt,nome, descricao, valor)) {
+        if(isProdutoValido(idTxt,nome, descricao, valor, quantidade)) {
             ((AbstractActivity)getActivity()).showProgress(true, mFormEditarProduto, progressBar);
             int idInt = Integer.parseInt(idTxt.getText().toString());
             String nomeString = nome.getText().toString();
             String descricaoString = descricao.getText().toString();
             String valorString = valor.getText().toString();
+            String quantidadeString = quantidade.getText().toString();
 
-            mEditarTask = new EditarProdutoTask(idInt, nomeString, descricaoString, new BigDecimal(valorString));
+            mEditarTask = new EditarProdutoTask(idInt, nomeString, descricaoString, new BigDecimal(valorString), true, new Integer(quantidadeString), false);
             mEditarTask.execute((Void) null);
         }
 
     }
 
-    private boolean isProdutoValido(EditText id,EditText nome, EditText descricao, EditText valor) {
+    private boolean isProdutoValido(EditText id,EditText nome, EditText descricao, EditText valor, EditText quantidade) {
         boolean valido = true;
 
         if(id==null) {
@@ -124,6 +129,14 @@ public class EditarProdutoFragment extends AbstractFragment {
             nome.requestFocus();
         }
 
+        if(quantidade==null) {
+            valido = false;
+        } else if(quantidade.getText().toString().equals("")) {
+            valido = false;
+            quantidade.setError(Mensagem.CAMPO_OBRIGATORIO);
+            quantidade.requestFocus();
+        }
+
         return valido;
     }
 
@@ -132,19 +145,25 @@ public class EditarProdutoFragment extends AbstractFragment {
         private final String mNome;
         private final String mDescricao;
         private final BigDecimal mValor;
+        private final Boolean mAtivo;
+        private final Integer mQuantidade;
+        private final Boolean mSincronizado;
         private int  mId;
 
-        EditarProdutoTask(int id, String nome, String descricao, BigDecimal valor) {
+        EditarProdutoTask(int id, String nome, String descricao, BigDecimal valor, Boolean ativo, Integer quantidade, Boolean sincronizado) {
             mId = id;
             mNome = nome;
             mDescricao = descricao;
             mValor = valor;
+            mAtivo = ativo;
+            mQuantidade = quantidade;
+            mSincronizado = sincronizado;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             ProdutoDao dao = new ProdutoDao(getContext());
-            dao.alterar(mId, mNome, mDescricao, mValor);
+            dao.alterar(mId, mNome, mDescricao, mValor, mAtivo, mQuantidade, mSincronizado);
             return true;
         }
 
@@ -160,6 +179,7 @@ public class EditarProdutoFragment extends AbstractFragment {
                 intent.putExtra("nomeProduto", mNome);
                 intent.putExtra("descricaoProduto", mDescricao);
                 intent.putExtra("valorProduto", mValor.toString());
+                intent.putExtra("quantidadeProduto", mQuantidade.toString());
                 //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().setResult(1, intent);
                 getActivity().finish();

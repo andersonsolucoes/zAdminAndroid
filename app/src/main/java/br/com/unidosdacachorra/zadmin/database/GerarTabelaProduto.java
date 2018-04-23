@@ -24,6 +24,7 @@ public class GerarTabelaProduto extends SQLiteOpenHelper {
     public static final String DESCRICAO = "descricao";
     public static final String VALOR = "valor";
     public static final String ATIVO = "ativo";
+    public static final String QUANTIDADE = "quantidade";
     public static final String SINCRONIZADO = "sincronizado";
     public static final int VERSAO = GerarDatabase.VERSAO;
 
@@ -40,6 +41,7 @@ public class GerarTabelaProduto extends SQLiteOpenHelper {
                 + DESCRICAO + " text,"
                 + VALOR + " numeric(10,2),"
                 + ATIVO + " integer,"
+                + QUANTIDADE + " integer,"
                 + SINCRONIZADO + " integer DEFAULT 0 "
                 +")";
         db.execSQL(sql);
@@ -53,8 +55,8 @@ public class GerarTabelaProduto extends SQLiteOpenHelper {
     }
 
     public static SimpleCursorAdapter getAdaptador(Context context, int layout, Cursor cursor) {
-        String[] nomeCampos = new String[]{GerarTabelaProduto.NOME, GerarTabelaProduto.VALOR, GerarTabelaProduto.SINCRONIZADO};
-        int[] idViews = new int[]{R.id.nomeProduto, R.id.valorProduto, R.id.sincronizacao};
+        String[] nomeCampos = new String[]{GerarTabelaProduto.NOME, GerarTabelaProduto.VALOR, GerarTabelaProduto.SINCRONIZADO, GerarTabelaProduto.QUANTIDADE};
+        int[] idViews = new int[]{R.id.nomeProduto, R.id.valorProduto, R.id.sincronizacao, R.id.quantidadeProduto};
 
         SimpleCursorAdapter adaptador = new SimpleCursorAdapter(context,
                 layout, cursor, nomeCampos, idViews, 0);
@@ -76,6 +78,10 @@ public class GerarTabelaProduto extends SQLiteOpenHelper {
                     } else {
                         img.setImageResource(R.drawable.ic_alert);
                     }
+                    return true;
+                } else if(aColumnIndex == 6) {
+                    TextView textView = (TextView) aView;
+                    textView.setText("("+aCursor.getInt(aColumnIndex) + ") em estoque");
                     return true;
                 }
 

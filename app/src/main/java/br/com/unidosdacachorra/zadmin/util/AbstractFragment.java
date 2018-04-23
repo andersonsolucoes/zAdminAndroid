@@ -30,4 +30,35 @@ public class AbstractFragment  extends Fragment {
             return valor;
         }
     }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show, final View form, final View progressBar) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            if(form != null) {
+                form.setVisibility(show ? View.GONE : View.VISIBLE);
+                form.animate().setDuration(shortAnimTime).alpha(
+                        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        form.setVisibility(show ? View.GONE : View.VISIBLE);
+                    }
+                });
+            }
+
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressBar.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            if(form != null) {
+                form.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        }
+    }
 }

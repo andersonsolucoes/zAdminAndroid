@@ -2,10 +2,14 @@ package br.com.unidosdacachorra.zadmin.loja.produto.fragmentos;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.database.sqlite.SQLiteCursor;
@@ -28,6 +32,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -36,11 +41,33 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.SoapFault;
+import org.ksoap2.serialization.PropertyInfo;
+import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+
 import br.com.unidosdacachorra.zadmin.R;
 import br.com.unidosdacachorra.zadmin.database.GerarTabelaProduto;
+import br.com.unidosdacachorra.zadmin.inicio.ActivityPrincipal;
+import br.com.unidosdacachorra.zadmin.login.Credencial;
 import br.com.unidosdacachorra.zadmin.loja.produto.activities.AdicionarProdutoActivity;
 import br.com.unidosdacachorra.zadmin.loja.produto.activities.DetalharProdutoActivity;
 import br.com.unidosdacachorra.zadmin.loja.produto.dao.ProdutoDao;
+import br.com.unidosdacachorra.zadmin.loja.produto.model.Produto;
 import br.com.unidosdacachorra.zadmin.util.AbstractActivity;
 import br.com.unidosdacachorra.zadmin.util.AbstractFragment;
 
@@ -64,6 +91,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
     private SwipeRefreshLayout swipeRefreshLayout;
     private ProgressBar progressList;
     private ProgressBar progressSincronizacao;
+    private ConsultarProdutoTask mConsultarProdutosTask = null;
 
 
     @Override
@@ -238,7 +266,10 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         refreshList.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
+                //popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
+                showProgress(true, null, progressBar);
+                mConsultarProdutosTask = new ConsultarProdutoTask(lista);
+                mConsultarProdutosTask.execute((Void) null);
                 return true;
             }
         });
@@ -317,7 +348,7 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
 
     @Override
     public void onRefresh() {
-        popularListView(lista, criterioBusca, posicaoInicial, numeroLinhas, true, false);
+        popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
     }
 
     private class CarregarProdutoTask extends AsyncTask<Void, Void, Boolean> {
@@ -463,11 +494,11 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            /*try {
+            try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }*/
+            }
             ProdutoDao dao = new ProdutoDao(getContext());
             dao.sincronizar(mIds);
 
@@ -493,6 +524,115 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         protected void onCancelled() {
             mLoadTask = null;
             ((AbstractActivity)getActivity()).showProgress(false, null, progressSincronizacao);
+        }
+    }
+
+    public class ConsultarProdutoTask extends AsyncTask<Void, Void, Boolean> {
+
+        static final String SOAP_ACTION = "http://www.unidosdacachorra.com.br/zAdmin/nusoap/consultarProdutos";
+        static final String NAMESPACE = "http://www.unidosdacachorra.com.br/zAdmin/nusoap";
+        static final String URL = "http://www.unidosdacachorra.com.br/zAdmin/nusoap/ws_produtos.php?WSDL";
+        static final String METHOD = "consultarProdutos";
+        static final int TIMEOUT = 600000;
+        private ListView mListView;
+        private ArrayAdapter<Produto> arrayAdapter;
+        private int atualizado = 0;
+        private int inserido = 0;
+
+        ConsultarProdutoTask(ListView lista) {
+            this.mListView = lista;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            SoapObject request = new SoapObject(NAMESPACE, METHOD);
+
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.setOutputSoapObject(request);
+
+            HttpTransportSE httpTransport = new HttpTransportSE(URL, TIMEOUT);
+            //httpTransport.debug  = true;
+
+            try {
+                httpTransport.call(SOAP_ACTION, envelope);
+                String rs = (String) envelope.getResponse();
+
+
+
+                if (rs != null) {
+                    JSONParser jsonParser = new JSONParser();
+                    JSONArray jObj = new JSONObject(rs).getJSONArray("Produtos");
+
+                    for(int i = 0; i < jObj.length(); i++) {
+                        Produto p = new Produto();
+                        Long id = new Long(((JSONObject) jObj.get(i)).get("id").toString());
+                        p.setId(id);
+                        p.setNome(((JSONObject) jObj.get(i)).getString("nome"));
+                        p.setDescricao(((JSONObject) jObj.get(i)).getString("descricao"));
+                        BigDecimal valor = new BigDecimal(((JSONObject) jObj.get(i)).get("valor").toString());
+                        p.setValor(valor);
+                        p.setQuantidade(((JSONObject) jObj.get(i)).getInt("quantidade"));
+                        p.setSincronizado(Boolean.TRUE);
+                        p.setAtivo(Boolean.TRUE);
+
+                        ProdutoDao dao = new ProdutoDao(getActivity());
+                        Cursor obj = dao.carregarPorId(p.getId().intValue());
+                        if(obj != null && obj.getCount() > 0) {
+                            if(obj.getString(obj.getColumnIndex("sincronizado")) == null || obj.getInt(obj.getColumnIndex("sincronizado")) == 0){
+                                dao.alterar(p);
+                                atualizado++;
+                            }
+                        } else {
+                            dao.inserir(p);
+                            inserido++;
+                        }
+                    }
+
+
+
+
+                    //arrayAdapter = new ArrayAdapter<Produto>(getActivity(),android.R.layout.simple_list_item_1, produtos );
+
+                    //new Credencial(jObj.getString("login"),new Boolean(jObj.getString("logado")), jObj.getString("user_name"),jObj.getString("email"), jObj.getString("erro"));
+                    return true;
+                }
+
+            } catch (Exception e) {
+                Log.d("tag", "outr", e);
+            }
+
+
+            return false;
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            String msg = "";
+            if(inserido>0){
+                msg += inserido + " registro(s) inserido(s)\n";
+            }
+            if(atualizado>0){
+                msg += atualizado + " registro(s) atualizado(s)\n";
+            }
+            if(msg.length() > 0) {
+                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
+                mListView.setAdapter(arrayAdapter);
+            } else {
+                Toast.makeText(getActivity(), "Não existem itens para sincronizar", Toast.LENGTH_SHORT).show();
+            }
+
+            mConsultarProdutosTask = null;
+
+            showProgress(false, null, progressBar);
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            mConsultarProdutosTask = null;
+            showProgress(false, null, progressBar);
         }
     }
 

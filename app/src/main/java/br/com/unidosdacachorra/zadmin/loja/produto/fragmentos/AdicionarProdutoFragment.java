@@ -59,20 +59,22 @@ public class AdicionarProdutoFragment extends AbstractFragment {
         EditText nome = (EditText) getActivity().findViewById(R.id.add_nome_produto);
         EditText descricao = (EditText) getActivity().findViewById((R.id.add_descricao_produto));
         EditText valor = (EditText) getActivity().findViewById(R.id.add_valor_produto);
+        EditText quantidade = (EditText) getActivity().findViewById(R.id.add_quantidade_produto);
 
-        if(isProdutoValido(nome, descricao, valor)) {
+        if(isProdutoValido(nome, descricao, valor, quantidade)) {
             ((AbstractActivity)getActivity()).showProgress(true, mFormAddProduto, progressBar);
             String nomeString = nome.getText().toString();
             String descricaoString = descricao.getText().toString();
             String valorString = valor.getText().toString();
+            String quantidadeString = quantidade.getText().toString();
 
-            mAddTask = new InserirProdutoTask(nomeString, descricaoString, new BigDecimal(valorString));
+            mAddTask = new InserirProdutoTask(nomeString, descricaoString, new BigDecimal(valorString), new Integer(quantidadeString));
             mAddTask.execute((Void)null);
         }
 
     }
 
-    private boolean isProdutoValido(EditText nome, EditText descricao, EditText valor) {
+    private boolean isProdutoValido(EditText nome, EditText descricao, EditText valor, EditText quantidade) {
         boolean valido = true;
 
         if(valor==null) {
@@ -98,6 +100,14 @@ public class AdicionarProdutoFragment extends AbstractFragment {
             nome.setError(Mensagem.CAMPO_OBRIGATORIO);
             nome.requestFocus();
         }
+        if(quantidade==null) {
+            valido = false;
+        } else if(quantidade.getText().toString().equals("")) {
+            valido = false;
+            quantidade.setError(Mensagem.CAMPO_OBRIGATORIO);
+            quantidade.requestFocus();
+        }
+
 
         return valido;
     }
@@ -107,18 +117,20 @@ public class AdicionarProdutoFragment extends AbstractFragment {
         private final String mNome;
         private final String mDescricao;
         private final BigDecimal mValor;
+        private final Integer mQuantidade;
         private long idInserido;
 
-        InserirProdutoTask(String nome, String descricao, BigDecimal valor) {
+        public InserirProdutoTask(String nome, String descricao, BigDecimal valor, Integer quantidade) {
             mNome = nome;
             mDescricao = descricao;
             mValor = valor;
+            mQuantidade = quantidade;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             ProdutoDao dao = new ProdutoDao(getContext());
-            idInserido = dao.inserir(mNome, mDescricao, mValor, true);
+            idInserido = dao.inserir(null,mNome, mDescricao, mValor, true, mQuantidade, false);
             return true;
         }
 

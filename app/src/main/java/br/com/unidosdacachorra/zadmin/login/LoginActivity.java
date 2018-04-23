@@ -49,7 +49,7 @@ public class LoginActivity extends AbstractActivity {
 
     static final String SOAP_ACTION = "http://www.unidosdacachorra.com.br/zAdmin/nusoap/login";
     static final String NAMESPACE = "http://www.unidosdacachorra.com.br/zAdmin/nusoap";
-    static final String URL = "http://www.unidosdacachorra.com.br/zAdmin/nusoap/server_zAdmin.php?WSDL";
+    static final String URL = "http://www.unidosdacachorra.com.br/zAdmin/nusoap/ws_acesso.php?WSDL";
     static final String METHOD = "login";
     static final int TIMEOUT = 600000;
 
