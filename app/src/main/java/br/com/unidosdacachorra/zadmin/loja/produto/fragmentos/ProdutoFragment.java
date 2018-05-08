@@ -578,7 +578,11 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
                         ProdutoDao dao = new ProdutoDao(getActivity());
                         Cursor obj = dao.carregarPorId(p.getId().intValue());
                         if(obj != null && obj.getCount() > 0) {
+                            BigDecimal valorDecimal = new BigDecimal(obj.getString(obj.getColumnIndex("valor")));
                             if(obj.getString(obj.getColumnIndex("sincronizado")) == null || obj.getInt(obj.getColumnIndex("sincronizado")) == 0){
+                                dao.alterar(p);
+                                atualizado++;
+                            } else if (obj.getInt(obj.getColumnIndex("quantidade")) != p.getQuantidade() || !obj.getString(obj.getColumnIndex("descricao")).equals(p.getDescricao())  || !obj.getString(obj.getColumnIndex("nome")).equals(p.getNome()) || valorDecimal.compareTo(p.getValor()) != 0) {
                                 dao.alterar(p);
                                 atualizado++;
                             }
