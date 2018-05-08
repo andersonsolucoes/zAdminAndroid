@@ -96,8 +96,10 @@ public class AbstractActivity extends AppCompatActivity
                 nvDrawer.getMenu().clear();
                 nvDrawer.inflateMenu(R.menu.menu_itens_principal);
             } else if (id == R.id.nav_loja) {
-                nvDrawer.getMenu().clear();
-                nvDrawer.inflateMenu(R.menu.menu_itens_loja);
+                //nvDrawer.getMenu().clear();
+                //nvDrawer.inflateMenu(R.menu.menu_itens_loja);
+                //onNavigationItemSelected(nvDrawer.getMenu().findItem(R.id.nav_back));
+                intent = new Intent(AbstractActivity.this, ProdutoActivity.class);
             } else if (id == R.id.nav_loja_vendas) {
                 onNavigationItemSelected(nvDrawer.getMenu().findItem(R.id.nav_back));
                 intent = new Intent(AbstractActivity.this, VendaActivity.class);

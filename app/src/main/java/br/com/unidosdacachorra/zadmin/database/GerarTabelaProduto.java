@@ -81,7 +81,7 @@ public class GerarTabelaProduto extends SQLiteOpenHelper {
                     return true;
                 } else if(aColumnIndex == 6) {
                     TextView textView = (TextView) aView;
-                    textView.setText("("+aCursor.getInt(aColumnIndex) + ") em estoque");
+                    textView.setText(aCursor.getInt(aColumnIndex) + " em estoque");
                     return true;
                 }
 

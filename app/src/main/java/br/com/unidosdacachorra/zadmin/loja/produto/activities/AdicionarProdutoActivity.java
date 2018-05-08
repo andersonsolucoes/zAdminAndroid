@@ -36,9 +36,10 @@ public class AdicionarProdutoActivity extends AbstractActivity {
             }
         });
 
-        nvDrawer.getMenu().clear();
-        nvDrawer.inflateMenu(R.menu.menu_itens_loja);
-        nvDrawer.setCheckedItem(R.id.nav_loja_produtos);
+        //nvDrawer.getMenu().clear();
+        //nvDrawer.inflateMenu(R.menu.menu_itens_loja);
+        //nvDrawer.setCheckedItem(R.id.nav_loja_produtos);
+        nvDrawer.setCheckedItem(R.id.nav_loja);
         mDrawer.closeDrawers();
 
     }

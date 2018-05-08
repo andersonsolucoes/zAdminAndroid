@@ -266,8 +266,6 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         refreshList.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                //popularListView(lista, null, posicaoInicial, numeroLinhas, true, false);
-                showProgress(true, null, progressBar);
                 mConsultarProdutosTask = new ConsultarProdutoTask(lista);
                 mConsultarProdutosTask.execute((Void) null);
                 return true;
@@ -544,6 +542,12 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgress(true, null, progressSincronizacao);
+        }
+
+        @Override
         protected Boolean doInBackground(Void... params) {
             SoapObject request = new SoapObject(NAMESPACE, METHOD);
 
@@ -629,14 +633,14 @@ public class ProdutoFragment extends AbstractFragment implements SwipeRefreshLay
 
             mConsultarProdutosTask = null;
 
-            showProgress(false, null, progressBar);
+            showProgress(false, null, progressSincronizacao);
 
         }
 
         @Override
         protected void onCancelled() {
             mConsultarProdutosTask = null;
-            showProgress(false, null, progressBar);
+            showProgress(false, null, progressSincronizacao);
         }
     }
 
